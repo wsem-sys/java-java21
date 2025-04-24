@@ -1,8 +1,8 @@
 package java17.ex02;
 
 import java.util.function.BiFunction;
-
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java17.data.Account;
 import java17.data.Person;
@@ -12,24 +12,31 @@ import java17.data.Person;
  */
 public class Function_02_Test {
 
-    //  tag::buildAccount[]
-    // TODO Compléter la fonction buildAccount
-    // TODO la fonction possède 2 paramètres en entrée : une personne et un solde
-    BiFunction<Person, Integer, Account> buildAccount = null;
-    //  end::buildAccount[]
+    /**
+     * Fonction de construction d'un Account à partir d'une Person et d'un solde
+     * @param p la personne propriétaire du compte
+     * @param balance le montant initial du compte
+     * @return un nouvel Account dont l'owner est p et le balance fixé à balance
+     */
+    private static final BiFunction<Person, Integer, Account> BUILD_ACCOUNT = (p, balance) -> {
+        final Account account = new Account();
+        account.setOwner(p);
+        account.setBalance(balance);
+        return account;
+    };
 
     @Test
-    public void test_build_account() throws Exception {
+    public void testBuildAccount() {
+        // Création d'une personne de test
+        final Person person = new Person("John", "France", 80, "pass");
+        // Invoquer la fonction avec la personne et le solde 500
+        final Account account = BUILD_ACCOUNT.apply(person, 500);
 
-        // TODO invoquer la fonction buildAccount pour que le test soit passant
-        Account account = null;
-
-        assert account.getBalance().equals(500);
-        assert account.getOwner().getFirstname().equals("John");
-        assert account.getOwner().getLastname().equals("France");
-        assert account.getOwner().getAge().equals(80);
-        assert account.getOwner().getPassword().equals("pass");
+        // Vérifier que le solde et le propriétaire sont correctement définis
+        assertEquals(Integer.valueOf(500), account.getBalance());
+        assertEquals("John", account.getOwner().getFirstname());
+        assertEquals("France", account.getOwner().getLastname());
+        assertEquals(Integer.valueOf(80), account.getOwner().getAge());
+        assertEquals("pass", account.getOwner().getPassword());
     }
-
-
 }

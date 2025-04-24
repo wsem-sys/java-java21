@@ -1,8 +1,9 @@
 package java17.ex03;
 
 import java.util.function.BinaryOperator;
-
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java17.data.Person;
 
@@ -11,29 +12,32 @@ import java17.data.Person;
  */
 public class Function_03_Test {
 
-    //  tag::makeAChild[]
-    // TODO Compléter la fonction makeAChild
-    // TODO l'enfant possède le nom du père
-    // TODO l'enfant possède le prenom "<PRENOM_PERE> <PRENOM_MERE>"
-    // TODO l'age de l'enfant est 0
-    // TODO le mot de passe de l'enfant est null
-    BinaryOperator<Person> makeAChild = null;
-    //  end::makeAChild[]
-
+    /**
+     * Fonction de création d'un enfant à partir du père et de la mère.
+     * @param father le parent père
+     * @param mother le parent mère
+     * @return une nouvelle Person représentant l'enfant
+     */
+    private static final BinaryOperator<Person> MAKE_A_CHILD = (father, mother) -> {
+        final Person child = new Person();
+        child.setFirstname(father.getFirstname() + " " + mother.getFirstname());
+        child.setLastname(father.getLastname());
+        child.setAge(0);
+        child.setPassword(null);
+        return child;
+    };
 
     @Test
-    public void test_makeAChild() throws Exception {
+    public void testMakeAChild() {
+        final Person father = new Person("John", "France", 25, "johndoe");
+        final Person mother = new Person("Aline", "Lebreton", 22, "alino");
 
-        Person father = new Person("John", "France", 25, "johndoe");
-        Person mother = new Person("Aline", "Lebreton", 22, "alino");
+        // Invoquer la fonction pour créer l'enfant
+        final Person child = MAKE_A_CHILD.apply(father, mother);
 
-        // TODO compléter le test pour qu'il soit passant
-        Person child = null;
-
-        assert child.getFirstname().equals("John Aline");
-        assert child.getLastname().equals("France");
-        assert child.getAge().equals(0);
-        assert child.getPassword() == null;
+        assertEquals("John Aline", child.getFirstname());
+        assertEquals("France", child.getLastname());
+        assertEquals(Integer.valueOf(0), child.getAge());
+        assertNull(child.getPassword());
     }
-
 }
